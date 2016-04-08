@@ -6,10 +6,10 @@ return [
         //Illuminate settings should really use remote 
         'capsule' => [
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
+			'host'      => '172.17.42.1',
 			'database'  => 'database',
 			'username'  => 'root',
-			'password'  => 'passsword',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => ''

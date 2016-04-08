@@ -187,6 +187,8 @@ $ docker run --name usersystem -p 8080:80 -v
 return [
     'settings' =&gt; [
         'displayErrorDetails' =&gt; true, // set to false in production
+        
+        'supersecretkeyforjms' =&gt; 'supersecretkeyyoushouldnotcommittogithub',
 
         // Illuminate settings should really use remote
         'capsule' =&gt; [
@@ -200,7 +202,7 @@ return [
                         'prefix'    =&gt; ''
                 ]
     ],
-];</code></pre></div></div>
+];    </code></pre></div></div>
 </section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="5282f92553e6be013e27965c4b46aca1"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
 <h2>Create your enviornment</h2>
 </div></div>
@@ -226,24 +228,65 @@ $container['capsule'] = function ($c) {
     return $capsule;
 };
 </code></pre></div></div>
-</section></section><section data-id="b2eb71dd6afe4a299c1ead64d7bf7e0b"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="b06367e619e65d78bcfe437380eb7bb9"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
-<h2>Looking more in depth at our src</h2>
+</section></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="ed90aac571e6bac273a86a7e85b546a3"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Looking at our index</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="d2327e5d030d0e935c731ad736527cf2"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="11f8614ff26f5720c340e2e5bf50f9f6"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
 <ul>
-	<li>Our user system is heavily going to rely on these features:
+	<li>This is our bootstrap</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 421px; left: 0px; top: 255px;" data-block-id="ac68273016a3dea95a2d2db96f1e8c0a"><div class="sl-block-content" style="z-index: 13; font-size: 103%; border: 1px solid rgb(51, 51, 51);"><pre><code>require __DIR__ . '/../vendor/autoload.php';
+
+// Instantiate the app
+$settings = require __DIR__ . '/../src/settings.php';
+$app = new \Slim\App($settings);
+
+// Set up dependencies
+require __DIR__ . '/../src/dependencies.php';
+
+// Register middleware
+require __DIR__ . '/../src/middleware.php';
+
+// Register routes
+require __DIR__ . '/../src/routes.php';
+
+// Register controllers THIS IS NOT DEFAULT
+require __DIR__ . '/../src/controllers.php';
+
+// Run app
+$app-&gt;run();</code></pre></div></div>
+</section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="c53d9c38ac266f1b21ec5ec561bf65bd"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Models If you really want</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="bd85a6a7ad56a09727e06a3cb25fd673"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>In case you want models just make a models folder in src
 	<ul>
-		<li>Routes</li>
-		<li>Dependencies (for our DBAL)</li>
-		<li>Controllers</li>
-		<li>Settings</li>
+		<li>They now live in your namespace</li>
 	</ul>
 	</li>
-	<li>Controllers don't come by default!</li>
 </ul>
 </div></div>
 
-</section><section class="stack" data-id="8523c6f97b23c90b31f6fe4034ab9ca7"><section data-id="be4b17432bdda6091c2be23740d5e692"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 51px; height: auto;" data-block-id="68886a7e34667b0018462c3b4f3b6256"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 406px; left: 0px; top: 261px;" data-block-id="be4b31993078308873a08b22fdeb633f"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+
+namespace UserSystem\Models;
+
+class UserModel
+{
+    /** @var string */
+    private $firstName;
+
+    /** @var string */
+    private $lastName;
+
+    /** @var string */
+    private $email;
+
+    //getters and setters if you want and other logic
+}
+</code></pre></div></div></section><section class="stack" data-id="8523c6f97b23c90b31f6fe4034ab9ca7"><section data-id="be4b17432bdda6091c2be23740d5e692"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 51px; height: auto;" data-block-id="68886a7e34667b0018462c3b4f3b6256"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
 <h2>Edit our routes</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="4dd09a78091ed6cc665cbc38d4073828"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
@@ -318,26 +361,26 @@ $container['UserController'] = function ($c) {
 </ul>
 </div></div>
 
-<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 210px;" data-block-id="e19d67128709a33d3c9095ecbad89091"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
-
-namespace UserSystem\Controllers
-
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 204px;" data-block-id="e19d67128709a33d3c9095ecbad89091"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+namespace UserSystem\Controllers;
 class UserController
 {
-        /** @var Illuminate\Database\Query\Builder */
-        private $userTable;
-        /** @var array */
-        private $userTableColumns = ['firstName','lastName','email'];
+    /** @var Illuminate\Database\Query\Builder */
+    private $userTable;
 
-        public function getUserTable()
-        {
-                return $this-&gt;userTable;
-        }
+    //If using a model feel free to pull it from there
+    /** @var array */
+    private $userTableColumns = ['firstName','lastName','email'];
 
-        public function __construct($userTable)
-        {
-                $this-&gt;userTable = $userTable;
-        }
+    public function getUserTable()
+    {
+        return $this-&gt;userTable;
+    }
+
+    public function __construct($userTable)
+    {
+        $this-&gt;userTable = $userTable;
+    }
 }
 </code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="96ae0c43c10fd15c0a68a50e7e8e6c20"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
 <h2>Creating our controllers</h2>
@@ -432,8 +475,9 @@ private function validateColumn($filter) {
 </div></div>
 
 <div class="sl-block" data-block-type="code" style="width: 960px; height: 161px; left: 0px; top: 399px;" data-block-id="7a6859a06fb98544f9f1b2e55e11bde0"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+$container = $app-&gt;getContainer();
 $app-&gt;add(new \Slim\Middleware\JwtAuthentication([
-    "secret" =&gt; "supersecretkeyyoushouldnotcommittogithub"
+    "secret" =&gt; $container-&gt;get('settings')['supersecretkeyforjms']
 ]));
 </code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="2074165e085b36581c6801a145dcbdfd"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
 <h2>Middleware</h2>
@@ -449,7 +493,7 @@ $app-&gt;add(new \Slim\Middleware\JwtAuthentication([
 <div class="sl-block" data-block-type="code" style="width: 960px; height: 161px; left: 0px; top: 399px;" data-block-id="56e2625f4c3b7de99154192b6a656cee"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
 $app-&gt;add(new \Slim\Middleware\JwtAuthentication([
     "path" =&gt; "/users",
-    "secret" =&gt; "supersecretkeyyoushouldnotcommittogithub"
+    "secret" =&gt; $container-&gt;get('settings')['supersecretkeyforjms']
 ]));
 </code></pre></div></div></section><section><div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 360px; height: 137.368px; left: 301px; top: 282px;" data-block-id="d42d8d1f490b9843c5dfa70d12c3743e"><div class="sl-block-content" style="z-index: 11;"><img data-natural-width="228" data-natural-height="87" data-src="develop-microservices-with-slim/2444186-output_niymxT.gif"></div></div>
 <div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="1a25482aa29832ee89f288abb8865920"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 12; text-align: center;">
