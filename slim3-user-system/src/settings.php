@@ -3,8 +3,8 @@ return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
         
-        // Monolog settings
-        'logger' => [
+        //Illuminate settings should really use remote 
+        'capsule' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'database',

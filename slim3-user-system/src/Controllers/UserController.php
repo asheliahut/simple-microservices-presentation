@@ -103,10 +103,10 @@ class UserController
 		
 	}
 	
-	private function validateColumn($filter)
+	private function validateColumn($column)
 	{
-		if(!in_array($filter, $this->userTableColumns)){
-			throw new \Exception("$filter is not a valid filter option.");
+		if(!in_array($column, $this->userTableColumns)){
+			throw new \Exception("$column is not a valid column option.");
 		}
 	}
 	
