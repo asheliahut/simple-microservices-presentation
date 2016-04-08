@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+	<html class="sl-root base export loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Develop Microservices With Slim: Slides</title>
+		<meta name="description" content="Slides">
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v2.css">
+
+
+
+	</head>
+	<body class="reveal-viewport theme-font-league theme-color-sky-blue">
+		<div class="reveal">
+			<div class="slides">
+				<section data-id="931e06b39473712ea853a15bb9e31204"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;" data-block-id="a255e49118afcd5f5e842968a95ce3e3"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10;">
+<h1><a href="http://lonestarphp.com/sessions#building-simple-micro-services-using-slim-30" target="_blank">Building Simple Micro Services using Slim 3.0</a></h1>
+</div></div>
+<div class="sl-block" data-block-type="text" data-block-id="b2250ceb4e5ce3467dc201a03d62c6a9" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 334px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<p>By:</p>
+
+<p><span style="font-size:1.2em"><strong>Ashley Hutson</strong></span></p>
+
+<p>Twitter: @asheliahut</p>
+
+<p>all code written in vim no need for bulk!</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 547px;" data-block-id="f2c495a1a4af884cf0975f1cdff0641a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p>Follow Along:</p>
+
+<p><a href="https://github.com/asheliahut/simple-microservices-presentation" target="_blank">https://github.com/asheliahut/simple-microservices-presentation</a></p>
+</div></div></section><section data-id="a1a46eeed1caa36791448dfc882c7291"><div class="sl-block" data-block-type="text" style="width: 430px; left: 23px; top: 87px; height: auto;" data-block-id="3bced9e8781d1a3d43b5401614165cb2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+<h2>Who Am I?</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 430px; left: 23px; top: 161px; height: auto;" data-block-id="334a02f87b7a4c6247e1b76de2eb64b1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec metus justo. Aliquam erat volutpat." style="z-index: 12; text-align: left;">
+<ul>
+	<li>DevOps guru</li>
+	<li>Software Engineer
+	<ul>
+		<li>PHP(first and foremost)</li>
+		<li>Node</li>
+		<li>GoLang</li>
+	</ul>
+	</li>
+	<li>Online Teacher</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 477px; height: 478.327px; left: 480px; top: 83.3366px;" data-block-id="c3e3b7d48f9d96966c8871be43136e03"><div class="sl-block-content fragment fade-left" style="border-width: 15px; border-color: rgb(0, 0, 0); z-index: 0;" data-fragment-index="0"><img data-natural-width="719" data-natural-height="721" style="" data-src="develop-microservices-with-slim/2422169-10409639_10207668646808153_3907599583339865896_n.jpg"></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;" data-block-id="84c6d3b8f7028ee374708272ef45e3be"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
+<h2>Overview</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 79px; top: 140px;" data-block-id="9582f33e1f6920e7d09bc5b1a48ce95d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ol>
+	<li>What is a microservice</li>
+	<li>Why Slim?</li>
+	<li>Composer</li>
+	<li>Docker</li>
+	<li>Configs</li>
+	<li>Routes</li>
+	<li>Controllers</li>
+	<li>Middleware</li>
+	<li>Deployment Tactics</li>
+</ol>
+</div></div></section><section data-id="4527fa0f1698386737d7e0a790fd4dbd"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="b55ab1dc2c0c64b9f58e96ce88cfc244"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>Micro Services? What in the world are those?</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="93222ba762548eb9a813af61c2c45d32"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<ul>
+	<li>Break your application into base pieces</li>
+	<li>Create salable applications</li>
+	<li>Get more done in API first development</li>
+	<li>Develop without boundaries</li>
+</ul>
+</div></div></section><section data-id="9e4cd5f56e40919b45f86661c71ce045"><div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;" data-block-id="0399755b953934d19d89e20bd18b2cf4"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>But I like my giant application! </h2>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 385.552px; height: 475px; left: 286px; top: 183px;" data-block-id="3ff648eea509a722b4f0b0061b53fef9"><div class="sl-block-content"><img data-natural-width="625" data-natural-height="770" data-src="develop-microservices-with-slim/2442250-grumpyshame.jpg"></div></div></section><section data-id="c1d9dcf1b0e6daa495336f7ee62fdc94"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="8cb4159fd22023abab67a2bd517d955b"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+<h2>Pros</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="54e27b5d6dbf304e8a7ff30cf6d76e0b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 12;">
+<ul>
+	<li>Quick development</li>
+	<li>Smaller codebases with reusable code as services(code based)</li>
+	<li>Smaller sets of tests (yes test your services)</li>
+	<li>Quick deployments and upgrades!</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="94d1d24697f98f362f1dd78755992a42"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 13;">
+<h2>Cons</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="d2b6ca4ef9d22e3a26532a917d45fec0"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 14;">
+<ul>
+	<li>Can cause issues with consistency across large teams</li>
+	<li>Massive deployments in distributed systems can become a headache without proper management.</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="image" data-block-id="7b091c710532aef1a0225e644e7638ec" style="min-width: 30px; min-height: 30px; width: 271.5px; height: 181px; left: 608px; top: 496px;"><div class="sl-block-content" style="z-index: 16;"><img style="" data-natural-width="750" data-natural-height="500" data-src="develop-microservices-with-slim/2422347-IS09AV064_Comp.jpg"></div></div></section><section data-id="8e1d03630344b95c741dbc0e5c595914"><div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;" data-block-id="326fe472a7c0e8f3f065b9147e7f07ef"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
+<h2>Why Choose Slim?</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" data-block-id="096b699b9801c3cc6a28db8989ccfe5d" style="height: auto; min-width: 30px; min-height: 30px; width: 799px; left: 79px; top: 280px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui"><ul>
+<li>It's just drop dead simple to use</li>
+<li>Other micro frameworks may have extras throw in that aren't needed (I'm looking at you lumen)</li>
+<li>Middleware to tie in your services like auth a breeze</li>
+</ul></div></div>
+<div class="sl-block" data-block-type="text" data-block-id="43588a09f179788d2af33625251005e9" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 79px; top: 140px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; text-align: left;">
+<blockquote>
+<p><span style="color:rgb(51, 51, 51)">Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.</span></p>
+</blockquote>
+</div></div></section><section data-id="d82414d2384bca013b74e7fc95c921e4"><div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;" data-block-id="eb2b3827ab6e99ab4b02ea4daa70a233"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
+<h2>Now lets get slim going!</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="77b650d6589438699d3dfeb792a86f02"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>First things first setup a project directory for your first service let's start with a user system!</li>
+	<li>Use composer to start a skeleton directly from slimframework's homepage</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 140px; left: 0px; top: 350px;" data-block-id="f2ad6e43b98f54379179626bce55b8a1"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>With Composer Globally
+$ composer create-project slim/slim-skeleton user-system
+Not Globally
+$ php composer.phar create-project slim/slim-skeleton user-system
+</code></pre></div></div></section><section data-id="3143bacdcf1fe308ca082828e022b2d3"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="242f5503a503e2250943ae9fa3a687d0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Get your system ready With Docker</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="396c004f787a62a502ba0c8cfce65dc1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>If you don't know what docker is or visualizing your infrastructure you should learn</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" data-block-id="74c272028702ceec9d1bd3a562f9a9f2" style="min-width: 30px; min-height: 30px; width: 960px; height: 140px; left: 0px; top: 350px;"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>$ docker pull skiychan/nginx-php7:latest
+$ docker run --name usersystem -p 8080:80 -v 
+/path/to/project/directory:/data/www -d skiychan/nginx-php7</code></pre></div></div>
+<div class="sl-block" data-block-type="text" data-block-id="4251e02146218c1f360b78a7b5a05181" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 591px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(0, 0, 255); background-color: rgb(51, 51, 51);">
+<p><a href="https://hub.docker.com/r/skiychan/nginx-php7/" target="_blank">https://hub.docker.com/r/skiychan/nginx-php7/</a></p>
+</div></div></section><section data-id="ba5f94230a36cee4c2e58fa522b68488"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="c5e73cf265e8999fcc65da8ab1f9f4c5"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>MVC paradigm in SLIM</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="9c3a3264cd85ada13004191c552dba84"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>So it's 2016 probably should do this or people will yell</li>
+	<li>Models can have overhead my database is my model Or keep models independent and use them your call!</li>
+	<li>Views are just json returns! strip out the whole view system! </li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 960px; height: 224.034px; left: 0px; top: 420px;" data-block-id="5deaaa39e4a2e04aa61f4467af2aef35"><div class="sl-block-content" style="z-index: 13;"><img data-natural-width="947" data-natural-height="221" data-src="develop-microservices-with-slim/2442307-baseDirectoryTreeStructure.PNG"></div></div></section><section class="stack" data-id="e4f69aedbb15ad95aa059663a26695d0"><section data-id="4452dbc6a94817217d2cd93a5f7bb6d7"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="e2da5bd0bfb1182942ba5bb3174ab80f"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Create your enviornment</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="0835a309d09defd2129463f1790d66eb"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>First edit your composer.json to guarantee your know dependencies
+	<ul>
+		<li>DBAL</li>
+		<li>jwt-auth</li>
+		<li>or maybe some monolog</li>
+	</ul>
+	</li>
+	<li>Setup your autoloader!</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 268px; left: 0px; top: 396px;" data-block-id="b251aecf28fa1b19450164d97e7d04c0"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>"require": {
+    "php": "&gt;=5.5.0",
+    "slim/slim": "^3.1",
+    "illuminate/database": "^5.2",
+    "tuupola/slim-jwt-auth": "^2.1"
+},
+"autoload": {
+    "psr-4": {"UserSystem\\": "src/"}
+}
+</code></pre></div></div>
+</section><section data-id="46d9da12e5d6df30d45322946c86f9ac"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="98528716ad93cd20bf434432049cbb1c"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Create your enviornment</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="cb75ced0027f5443d1a1ffe8acec926c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>Edit our settings.php
+	<ul>
+		<li>Setup database connection</li>
+		<li>Remove unused settings</li>
+	</ul>
+	</li>
+	<li>This file can also be replaced during a docker deployment!</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 392px; left: 0px; top: 308px;" data-block-id="3bdcef5cab774d926064e574878fccb6"><div class="sl-block-content" style="z-index: 13; border: 1px solid rgb(51, 51, 51); font-size: 107%;"><pre><code>&lt;?php
+return [
+    'settings' =&gt; [
+        'displayErrorDetails' =&gt; true, // set to false in production
+
+        // Illuminate settings should really use remote
+        'capsule' =&gt; [
+                        'driver'    =&gt; 'mysql',
+                        'host'      =&gt; 'localhost',
+                        'database'  =&gt; 'database',
+                        'username'  =&gt; 'root',
+                        'password'  =&gt; 'passsword',
+                        'charset'   =&gt; 'utf8',
+                        'collation' =&gt; 'utf8_unicode_ci',
+                        'prefix'    =&gt; ''
+                ]
+    ],
+];</code></pre></div></div>
+</section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="5282f92553e6be013e27965c4b46aca1"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Create your enviornment</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="9d238dfd6b441b6a3794c2be4c031577"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>Edit our dependencies.php
+	<ul>
+		<li>Register our dependencies with the container</li>
+	</ul>
+	</li>
+</ul>
+</div></div>
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 392px; left: 0px; top: 252px;" data-block-id="3b40824e829404ae2ab56dd09c405337"><div class="sl-block-content" style="z-index: 13; border: 1px solid rgb(51, 51, 51); font-size: 107%;"><pre><code>&lt;?php
+// DIC configuration
+$container = $app-&gt;getContainer();
+
+// illuminate capsule
+$container['capsule'] = function ($c) {
+    $settings = $c-&gt;get('settings')['capsule'];
+    $capsule = new Illuminate\Database\Capsule\Manager;
+    //the connection name should not be needed for the default connection
+    $capsule-&gt;addConnection($settings, "userConnection");
+    return $capsule;
+};
+</code></pre></div></div>
+</section></section><section data-id="b2eb71dd6afe4a299c1ead64d7bf7e0b"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="b06367e619e65d78bcfe437380eb7bb9"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11; text-align: center;">
+<h2>Looking more in depth at our src</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="d2327e5d030d0e935c731ad736527cf2"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: left;" dir="ui">
+<ul>
+	<li>Our user system is heavily going to rely on these features:
+	<ul>
+		<li>Routes</li>
+		<li>Dependencies (for our DBAL)</li>
+		<li>Controllers</li>
+		<li>Settings</li>
+	</ul>
+	</li>
+	<li>Controllers don't come by default!</li>
+</ul>
+</div></div>
+
+</section><section class="stack" data-id="8523c6f97b23c90b31f6fe4034ab9ca7"><section data-id="be4b17432bdda6091c2be23740d5e692"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 51px; height: auto;" data-block-id="68886a7e34667b0018462c3b4f3b6256"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Edit our routes</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="4dd09a78091ed6cc665cbc38d4073828"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Initial callback paradigm used</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 366px; left: 0px; top: 235px;" data-block-id="8d79d124ca1b8e32e14fd5381d4b94de"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+/*
+ * Callbacks are set by default for your routes 
+ * User system routes
+*/
+$app-&gt;get('/users/{id:[0-9]+}', 
+    function ($request, $response, $args) {
+        return $response-&gt;withJson(["message" =&gt; "this is ugly"]);
+    }
+);</code></pre></div></div></section><section data-id="68ac5a4dcda853e348dd5b471467f953"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 51px; height: auto;" data-block-id="d07c443d80dcae3f88ed6b8a62bc836e"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Edit our routes</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="95fdcabe11fb316e908b0a27befcf37f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Now edit this route to use controllers</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 366px; left: 0px; top: 235px;" data-block-id="b6694c7f6ff798efde29b1009852f9de"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+/*
+ * Routes look how clean with controllers our route files can be
+ * User system routes
+*/
+$app-&gt;get('/users/{id:[0-9]+}', 'UserController:readUser');
+$app-&gt;get('/users', 'UserController:readAllUsers');
+$app-&gt;get('/users/{filter}/{value}', 'UserController:readAllUsersWithFilter');
+$app-&gt;post('/users', 'UserController:createUser');
+$app-&gt;put('/users/{id:[0-9]+}', 'UserController:updateUser');
+$app-&gt;delete('/users/{id:[0-9]+}', 'UserController:deleteUser');</code></pre></div></div></section></section><section class="stack" data-id="6669fb504aea72047d33c3a9dbde4e52"><section data-id="2aadab2b55adb9c963457fbadebdad10"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="be0c98ea020ec5619aab9883bb3582b0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 81px; top: 140px;" data-block-id="023fc00dfaf9ad7bfced2280340455c2"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Start by creating your controller folder</li>
+	<li>Second create a controllers.php file in your src directory</li>
+	<li>When complete your src should look like this</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 964.314px; height: 187px; left: -2px; top: 414px;" data-block-id="7ade990dd6a66c9e277a443e020d32d8"><div class="sl-block-content" style="z-index: 13;"><img data-natural-width="954" data-natural-height="185" data-src="develop-microservices-with-slim/2442383-OurSrcDirectory.PNG"></div></div></section><section data-id="feb003d019134fa92e8e5f2c55ce9603"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="7798a5b60376364ed23fb5d281189cfd"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="a1e0faaac4b9adc9180b952c6b4c3f8f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Time to edit that controllers.php file and define our controller</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 366px; left: 0px; top: 235px;" data-block-id="907df62dae3556f35419150b53fbd679"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+//Controller definition
+
+$container['UserController'] = function ($c) {
+   /* This is getting just the user table from our database */ 
+   $userTable = $c-&gt;get('capsule')-&gt;getConnection('userConnection')
+                                  -&gt;table("Users");
+   return new UserSystem\Controllers\UserController($userTable);
+};
+</code></pre></div></div></section><section data-id="ed4d837dde5018f3e7838512d231d774"><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="cbd9c941ddd14afb946f19a90491ba9b"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 82px; top: 140px;" data-block-id="6974882e34cabadfacb1a8c717f47286"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Create the controllers basic needs</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 210px;" data-block-id="e19d67128709a33d3c9095ecbad89091"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+
+namespace UserSystem\Controllers
+
+class UserController
+{
+        /** @var Illuminate\Database\Query\Builder */
+        private $userTable;
+        /** @var array */
+        private $userTableColumns = ['firstName','lastName','email'];
+
+        public function getUserTable()
+        {
+                return $this-&gt;userTable;
+        }
+
+        public function __construct($userTable)
+        {
+                $this-&gt;userTable = $userTable;
+        }
+}
+</code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="96ae0c43c10fd15c0a68a50e7e8e6c20"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 82px; top: 140px;" data-block-id="e14a7cf1cf1859f65262435140f25927"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Add in your route functionality</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 210px;" data-block-id="6262cfc6a072730ba28ee2b45a5c0add"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>//Slim does some neat parsing and sanitatization built into the request and args models
+public function readUser($request, $response, $args) {
+    $id = (int)$args['id'];
+
+    try {
+        $user = $this-&gt;getUserReturn($id);
+        return $response-&gt;withJson([
+            "success" =&gt; true, 
+            "message": "Found user $id", "data" =&gt; $user
+        ]);
+    } catch(\Exception $e){
+        return $response-&gt;withJson([
+            "success" =&gt; false, 
+            "message" =&gt; "User not found"
+        ], 404);
+    }
+}
+
+</code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="5b80855ae099f1e10fca6e79bc575267"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 82px; top: 140px;" data-block-id="b7d6968fcd0e15249c6f441bcc2f046b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Add in some custom validation </li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 210px;" data-block-id="5fb52976c7f948bc8e1231ef8afcc396"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>private function getUserReturn($id) {
+    $user = $this-&gt;getUserTable()-&gt;find($id);
+    if(empty($user))
+    {
+        throw new \Exception("User not found.");
+    }
+    return $user;
+
+}
+
+private function validateColumn($filter) {
+    if(!in_array($filter, $this-&gt;userTableColumns)){
+        throw new \Exception("$filter is not a valid column option.");
+    }
+}</code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="656c9c18e421775c7d09014642cb6838"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Creating our controllers</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 82px; top: 140px;" data-block-id="ae256161e7fa52b85b2b10f1a1776363"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>Add in a post for creation and give back a success or fail</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 457px; left: 0px; top: 210px;" data-block-id="206cb6406eb5e3064012b76a81f5c797"><div class="sl-block-content" style="z-index: 13; font-size: 108%; border: 1px solid rgb(51, 51, 51);"><pre><code>public function createUser($request, $response, $args) {
+    $userData = $request-&gt;getParsedBody();
+    try{
+        foreach($userData as $key =&gt; $val){
+            $this-&gt;validateColumn($key);
+        }
+
+        $userId = $this-&gt;getUserTable()-&gt;insertGetId($userData);
+        return $response-&gt;withJson([
+            "success" =&gt; true, 
+            "message": "User $userid has been created."
+        ]);
+    } catch(\Exception $e){
+        return $response-&gt;withJson([
+            "success" =&gt; false, 
+            "message" =&gt; "Error occured: ". $e-&gt;getMessage()
+        ], 400);
+    }
+}
+</code></pre></div></div></section></section><section class="stack"><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="2f5ea9d7fb28dafff55182fc3bfe3d18"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Middleware</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="66401c2b294602931e7bf6d86567445c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>
+	<p>Now that we have a working api let's get some authentication setup</p>
+	</li>
+	<li>
+	<p>Earlier we required in composer tuupola/slim-jwt-auth let's use it</p>
+	</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 161px; left: 0px; top: 399px;" data-block-id="7a6859a06fb98544f9f1b2e55e11bde0"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+$app-&gt;add(new \Slim\Middleware\JwtAuthentication([
+    "secret" =&gt; "supersecretkeyyoushouldnotcommittogithub"
+]));
+</code></pre></div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="2074165e085b36581c6801a145dcbdfd"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Middleware</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="f200079127197cce55212d6d9ae24606"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>
+	<p>It's that easy now we have working auth for our apis just need to define what routes it is applied to</p>
+	</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 161px; left: 0px; top: 399px;" data-block-id="56e2625f4c3b7de99154192b6a656cee"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+$app-&gt;add(new \Slim\Middleware\JwtAuthentication([
+    "path" =&gt; "/users",
+    "secret" =&gt; "supersecretkeyyoushouldnotcommittogithub"
+]));
+</code></pre></div></div></section><section><div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 360px; height: 137.368px; left: 301px; top: 282px;" data-block-id="d42d8d1f490b9843c5dfa70d12c3743e"><div class="sl-block-content" style="z-index: 11;"><img data-natural-width="228" data-natural-height="87" data-src="develop-microservices-with-slim/2444186-output_niymxT.gif"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="1a25482aa29832ee89f288abb8865920"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 12; text-align: center;">
+<h2>Middleware</h2>
+</div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="233ce35c290c60638ec0fc31ccd419c7"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Middleware</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="65b2790c54983b033bfbcc96c390e96e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>
+	<p>Let's add a little more fancy logic to only lock in only certain api requests</p>
+	</li>
+</ul>
+</div></div>
+
+<div class="sl-block" data-block-type="code" style="width: 960px; height: 348px; left: 0px; top: 259px;" data-block-id="67aafda3dc35b38cd51067226f51a050"><div class="sl-block-content" style="z-index: 13; font-size: 156%; border: 1px solid rgb(51, 51, 51);"><pre><code>&lt;?php
+$app-&gt;add(new \Slim\Middleware\JwtAuthentication([
+    "path" =&gt; "/users",
+    "secret" =&gt; "supersecretkeyyoushouldnotcommittogithub",
+    "rules" =&gt; [
+        new \Slim\Middleware\JwtAuthentication\RequestMethodRule([
+            "passthrough" =&gt; ["GET"]
+        ])
+    ]
+]));
+</code></pre></div></div></section></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="63a9f70620c435f3ff8c4a386c8f6ca6"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>Working api</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="94b7fe356810bb57cdb848988d1c4663"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>
+	<p>We now have a working api!</p>
+	</li>
+	<li>
+	<p>You can use the same code to go through and create a copy of a skeleton and continue to make other apis </p>
+	</li>
+	<li>
+	<p>Maybe an order system!</p>
+	</li>
+	<li>
+	<p>The application is now living in your docker container as well.</p>
+	</li>
+</ul>
+</div></div>
+
+</section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 81px; top: 45px; height: auto;" data-block-id="d57ea418d7e897a7da812a700829d621"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10; text-align: center;">
+<h2>WoRKING with docker</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 799px; left: 80px; top: 140px;" data-block-id="2042117b03f5c84b9884aa8678f52fbc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left;" dir="ui">
+<ul>
+	<li>
+	<p>Now that our application is a happy place in a git repository I hope.</p>
+	</li>
+	<li>
+	<p>You can deploy your docker container and have a shared file system with the code living on it.</p>
+	</li>
+	<li>
+	<p>Integrate this into your CI process and have automated bills with deployments</p>
+	</li>
+</ul>
+</div></div>
+
+</section><section>
+
+
+<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 640px; height: 400px; left: 160px; top: 150px;" data-block-id="a078c64ae95d427cba22169cdc689da9"><div class="sl-block-content" style="z-index: 11;"><img data-natural-width="640" data-natural-height="400" data-src="develop-microservices-with-slim/2444285-QandA.png"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 604px;" data-block-id="d388d6b9063214195f3f171f50b9a1c5"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; text-align: center;">
+<p>This is why i'm not in design</p>
+</div></div></section><section><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="7827863920b9e00235928e44bfaaddbc"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
+<h1>Rate this talk</h1>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 287px; height: auto;" data-block-id="8037f4b641269ebaf6bc271fc5803093"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Subtitle">
+<h2><a href="https://joind.in/talk/aa517" target="_blank">https://joind.in/talk/aa517</a></h2>
+</div></div></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":653773,"slug":"develop-microservices-with-slim","title":"Develop Microservices With Slim","description":"This is a presentation for developing microservices with Slim 3.0 and PHP7 and deployments to docker!","visibility":"self","published_at":null,"sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/ba4d0309810a0168e29fc6293c567f8b/thumb.jpg","view_count":5,"user":{"id":480246,"username":"ashleyhutson","name":"Ashley Hutson","description":null,"thumbnail_url":"//graph.facebook.com/10208020913134591/picture","private_thumbnail_url":"//graph.facebook.com/10208020913134591/picture","pro":true,"enterprise":false,"enterprise_manager":false,"settings":{"id":321979,"present_controls":true,"present_upsizing":true,"present_notes":true},"registered":true},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"league","theme_color":"sky-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":false,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"notes":{"a1a46eeed1caa36791448dfc882c7291":"Talk about Job history with verizon and working freelance in memphis","4527fa0f1698386737d7e0a790fd4dbd":"without boundaries implies that if one part of your system needs to be tuned you can do that one thing separately and not effect tons of other parts of the system.","3143bacdcf1fe308ca082828e022b2d3":"The run command will set the base running port to be port 80 internal and external to us will be 8080. -v allows to set an external volume and mount to a file system location which we will use for nginx. and -d specifies the distro we want","9e4cd5f56e40919b45f86661c71ce045":"things like phpstorm make this so much easier for giant applications to be built, you have to remember that these tools are also amazing for developing microservices though, like composer it can be a tool to help your build process on your containers.","feb003d019134fa92e8e5f2c55ce9603":"Talk about the difference between dependency injection and service location. Ask who still gets everything from their container?"}}};
+			SLConfig.current_user = {
+				name: "Ashley Hutson",
+				username: "ashleyhutson",
+				pro: true
+			};
+		</script>
+
+		<script src="lib/head.min.js"></script>
+		<script src="lib/reveal.min.js"></script>
+		<script>
+			// Make Slides speaker notes available in the reveal.js speaker view
+			if( SLConfig.deck.notes ) {
+				[].forEach.call( document.querySelectorAll( '.reveal .slides section' ), function( slide ) {
+
+					var value = SLConfig.deck.notes[ slide.getAttribute( 'data-id' ) ];
+					if( value && typeof value === 'string' ) {
+						slide.setAttribute( 'data-notes', value );
+					}
+
+				} );
+			}
+
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				mouseWheel: false,
+				showNotes: SLConfig.deck.share_notes,
+				slideNumber: SLConfig.deck.slide_number,
+
+				autoSlide: SLConfig.deck.auto_slide_interval || 0,
+				autoSlideStoppable: true,
+
+				rolling_links: SLConfig.deck.rolling_links || true,
+				center: SLConfig.deck.center || false,
+				loop: SLConfig.deck.should_loop || false,
+				rtl: SLConfig.deck.rtl || false,
+
+				transition: SLConfig.deck.transition,
+				backgroundTransition: SLConfig.deck.background_transition,
+
+				maxScale: 2,
+
+				dependencies: [
+					{ src: 'lib/reveal-plugins/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/highlight/highlight.js', async: true, callback: function() { hljs.initHighlighting(); hljs.initHighlightingOnLoad(); } },
+					{ src: 'lib/reveal-plugins/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+
+		
+
+	</body>
+</html>
