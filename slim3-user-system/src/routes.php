@@ -1,5 +1,6 @@
 <?php
 // Routes
+$app->get('/', 'DefaultController:indexAction');
 
 $app->get('/users/{id:[0-9]+}', 'UserController:readUser');
 $app->get('/users', 'UserController:readAllUsers');

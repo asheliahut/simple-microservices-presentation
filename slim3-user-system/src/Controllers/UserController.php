@@ -28,7 +28,7 @@ class UserController
 		
 		try { 
 			$user = $this->getUserReturn($id);
-			return $response->withJson(["success" => true, "message": "Found user $id", "data" => $user]);
+			return $response->withJson(["success" => true, "message" => "Found user $id", "data" => $user]);
 		} catch(\Exception $e){
 			return $response->withJson(["success" => false, "message" => "User not found"], 404);
 		}
@@ -37,7 +37,7 @@ class UserController
 	public function readAllUsers($request, $response, $args)
 	{
 		$users = $userTable->get();
-		return $response->withJson(["success" => true, "message": "All users returned", "data" => $users]);
+		return $response->withJson(["success" => true, "message" => "All users returned", "data" => $users]);
 	}
 
 	public function readAllUsersWithFilter($request, $response, $args)
@@ -49,9 +49,9 @@ class UserController
 			$this->validateColumn($filter);
 			$users = $this->getUserTable->where([$filter => $value]);
 			if(empty($users)){
-					return $response->withJson(["success" => true, "message": "No users found", "data" => $users], 404);
+				return $response->withJson(["success" => true, "message" => "No users found", "data" => $users], 404);
 			}
-			return $response->withJson(["success" => true, "message": "Filtered users by $filter", "data" => $users]);
+			return $response->withJson(["success" => true, "message" => "Filtered users by $filter", "data" => $users]);
 			
 		} catch(\Exception $e){
 			return $response->withJson(["success" => false, "message" => "Error occured: ". $e->getMessage()]);
@@ -66,7 +66,7 @@ class UserController
 				$this->validateColumn($key);
 			}
 			$userId = $this->getUserTable()->insertGetId($userData);
-			return $response->withJson(["success" => true, "message": "User $userid has been created."]);
+			return $response->withJson(["success" => true, "message" => "User $userId has been created."]);
 		} catch(\Exception $e){
 			return $response->withJson(["success" => false, "message" => "Error occured: ". $e->getMessage()], 400);
 		}
@@ -83,6 +83,7 @@ class UserController
 				$updateData = array_merge($updateData, [$key => $val]);
 			}
 			$userId = $this->getUserTable()->update($updateData);
+			return $response->withJson(["success" => true, "message" => "Updated user $id", "data" => $user]);
 			
 		} catch(\Exception $e){
 			return $response->withJson(["success" => false, "message" => "Error occured: ". $e->getMessage()], 400);

@@ -1,6 +1,6 @@
 {
-    "name": "asheliahut/slim3-user-system",
-    "description": "A user management system built using slim3 framework",
+    "name": "asheliahut/slim3-order-system",
+    "description": "A order management system built using slim3 framework",
     "keywords": ["microframework","rest","router", "psr7","microservice","usermanagement"],
     "homepage": "https://github.com/asheliahut/simple-microservices-presentation/tree/master/slim3-user-system",
     "license": "MIT",
@@ -18,12 +18,12 @@
         }
     ],
     "require": {
-        "php": ">=5.6.9",
+        "php": ">=5.5.0",
         "slim/slim": "^3.5",
         "illuminate/database": "^5.3",
         "tuupola/slim-jwt-auth": "^2.3"
     },
     "autoload": {
-        "psr-4": {"UserSystem\\": "src/"}
+        "psr-4": {"OrderSystem\\": "src/"}
     }
 }
