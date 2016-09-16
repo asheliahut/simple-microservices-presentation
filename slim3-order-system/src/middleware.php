@@ -3,7 +3,7 @@
 
 // e.g: $app->add(new \Slim\Csrf\Guard);
 $app->add(new \Slim\Middleware\JwtAuthentication([
-    "path" => "/users",
+    "path" => "/orders",
     "secret" => "supersecretkeyyoushouldnotcommittogithub", //Should be in docker file
     "rules" => [
         new \Slim\Middleware\JwtAuthentication\RequestMethodRule([
